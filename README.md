@@ -1,5 +1,9 @@
 # How to Build?
 
+## General
+
+This project is based on chia-docker project, but remove entrypoints.sh commands.
+
 ## Replace github with local mirror
 
 ```
