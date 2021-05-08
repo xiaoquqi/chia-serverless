@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 EXPOSE 8555
 EXPOSE 8444
 
-ARG BRANCH
+ARG BRANCH=latest
 ARG GIT_MIRROR=https://github.com/Chia-Network
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
