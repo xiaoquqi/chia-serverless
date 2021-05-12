@@ -7,7 +7,9 @@ ARG BRANCH=latest
 ARG GIT_MIRROR=https://github.com/Chia-Network
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y curl jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils apt nfs-common vim
+    apt-get install -y curl jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3-dev python3.8-venv python3.8-distutils apt nfs-common vim && \
+    curl -L http://gosspublic.alicdn.com/ossutil/1.7.3/ossutil64 -o /usr/bin/ossutil64
+
 
 ADD ./pip.conf /root/.pip/pip.conf
 RUN echo "Cloning ${BRANCH} ${GIT_MIRROR}"
@@ -19,7 +21,7 @@ RUN git clone --branch ${BRANCH} ${GIT_MIRROR}/chia-blockchain.git && \
     /bin/sh ./install.sh
 
 WORKDIR /chia-blockchain
-RUN mkdir /plots
+
 ADD ./entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ["bash", "./entrypoint.sh"]
