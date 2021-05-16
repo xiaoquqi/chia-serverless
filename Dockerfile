@@ -19,7 +19,8 @@ RUN git clone --branch ${BRANCH} ${GIT_MIRROR}/chia-blockchain.git && \
     git config -f .gitmodules submodule.mozilla-ca.url ${GIT_MIRROR}/mozilla-ca.git && \
     git submodule update --init mozilla-ca && \
     chmod +x install.sh && \
-    /bin/sh ./install.sh
+    /bin/sh ./install.sh && \
+    ln -s /chia-blockchain/venv/bin/chia /usr/local/bin/chia
 
 WORKDIR /chia-blockchain
 
