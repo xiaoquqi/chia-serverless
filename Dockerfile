@@ -17,7 +17,9 @@ RUN echo "Cloning ${BRANCH} ${GIT_MIRROR}"
 RUN git clone --branch ${BRANCH} ${GIT_MIRROR}/chia-blockchain.git && \
     cd chia-blockchain && \
     git config -f .gitmodules submodule.mozilla-ca.url ${GIT_MIRROR}/mozilla-ca.git && \
+    git config -f .gitmodules submodule.chia-blockchain-gui.url ${GIT_MIRROR}/chia-blockchain-gui.git && \
     git submodule update --init mozilla-ca && \
+    git submodule update --init chia-blockchain-gui && \
     chmod +x install.sh && \
     /bin/sh ./install.sh && \
     ln -s /chia-blockchain/venv/bin/chia /usr/local/bin/chia

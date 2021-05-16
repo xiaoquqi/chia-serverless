@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source activate
+. ./activate
 
 /chia-blockchain/venv/bin/chia init
 
