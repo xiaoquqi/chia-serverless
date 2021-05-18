@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+    all-node:
+        ports:
+            - '8444:8444'
+        container_name: chia-allnode
+        volumes:
+            - '~/.chia:/root/.chia'
+            - '~/.local:/root/.local'
+            - '/plots-tmp:/plots-tmp'
+            - '/plots-final:/plots-final'
+        image: chia-docker
+        command: '/bin/bash', '/entrypoint.sh', 'all']
+    harvester:
+        ports:
+        container_name: chia-harvester
+        volumes:
+            - '~/.chia:/root/.chia'
+            - '~/.local:/root/.local'
+            - '/plots-tmp:/plots-tmp'
+            - '/plots-final:/plots-final'
+        image: chia-docker
+        command: '/bin/bash', '/entrypoint.sh', 'harvester']
+    create-plots:
+        ports:
+        container_name: chia-create-plots
+        volumes:
+            - '~/.chia:/root/.chia'
+            - '~/.local:/root/.local'
+            - '/plots-tmp:/plots-tmp'
+            - '/plots-final:/plots-final'
+        image: chia-docker
+        command: '/bin/bash', '/entrypoint.sh', 'plots']
