@@ -4,12 +4,27 @@
 # This script is based on the official chia-docker project. I rewrite
 # to better running under Serverless.
 #
+# Pre-Condition
+#
+#   1. Path need to be mount in docker:
+#
+#   * Secret Words Path: /config/secret_words  
+#   * CA Keys file: /keys/ca
+#   * Plots Temp: /plots-tmp
+#   * Plots Final: /plots-final
+#
+#   If you already have your full node, you can find your CA keys file
+#   under ~/.chia/mainnet/config/ssl/ca
+#
+#   2. Env in harvest model
+#
+#   * FARMER_IP
+#   * FARMER_PORT
+#
 
 # Only for debug, change this to true
-DRY_RUN=true
-echo "Running in dry run model: $DRY_RUN..."
-
-if "$DRY_RUN"; then
+if [[ $2 = "dry-run" ]]; then
+    echo "Running in dry run model..."
     cmd=echo
 else
     cmd=''
@@ -43,6 +58,7 @@ if [[ -z "$1" ]]; then
 elif [ $1 = "all" ]; then
     echo "Starting all node..."
     $cmd chia start all
+    $cmd tail -f ~/.chia/mainnet/log/debug.log
     echo "Start all node successfully"
 elif [ $1 = "harvester" ]; then
     echo "Starting harvester and connect to $FARMER_IP:$FARMER_PORT..."
@@ -55,8 +71,9 @@ elif [ $1 = "harvester" ]; then
     $cmd sed -i 's/WARNING/INFO/g' ~/.chia/mainnet/config/config.yaml
     $cmd chia configure --set-farmer-peer $FARMER_IP:$FARMER_PORT
     $cmd chia start harvester
+    $cmd tail -f ~/.chia/mainnet/log/debug.log
     echo "Start harvester successfully"
-elif [ $1 = "create-plots" ]; then
+elif [ $1 = "create-plots-k32" ]; then
     echo "Creating plots..."
     $cmd chia create plots -t $PLOTS_TMP -d $PLOTS_FINAL
     echo "Start all node successfully"

@@ -10,9 +10,8 @@ services:
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
         image: chia-docker
-        command: '/bin/bash', '/entrypoint.sh', 'all']
+        command: ['/bin/bash', '/entrypoint.sh', 'all']
     harvester:
-        ports:
         container_name: chia-harvester
         volumes:
             - '~/.chia:/root/.chia'
@@ -20,9 +19,8 @@ services:
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
         image: chia-docker
-        command: '/bin/bash', '/entrypoint.sh', 'harvester']
+        command: ['/bin/bash', '/entrypoint.sh', 'harvester']
     create-plots:
-        ports:
         container_name: chia-create-plots
         volumes:
             - '~/.chia:/root/.chia'
@@ -30,4 +28,4 @@ services:
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
         image: chia-docker
-        command: '/bin/bash', '/entrypoint.sh', 'plots']
+        command: ['/bin/bash', '/entrypoint.sh', 'plots']

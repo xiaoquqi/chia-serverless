@@ -26,6 +26,6 @@ RUN git clone --branch ${BRANCH} ${GIT_MIRROR}/chia-blockchain.git && \
 
 WORKDIR /chia-blockchain
 
-ADD ./entrypoint.sh entrypoint.sh
+ADD ./entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["bash", "./entrypoint.sh"]
+ENTRYPOINT ["bash", "/entrypoint.sh"]
