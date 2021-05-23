@@ -98,7 +98,7 @@ elif [ $1 = "create-plots-k32" ]; then
     fi
 
     echo "Creating plots, tmp path is $PLOTS_TMP, final path: $PLOTS_FINAL..."
-    $cmd chia create plots -t $PLOTS_TMP -d $PLOTS_FINAL
+    $cmd chia plots create -t $PLOTS_TMP -d $PLOTS_FINAL
     echo "Plot create succesfully"
 
     echo "Uploading plot file to bucket $BUCKET..."
@@ -107,7 +107,7 @@ elif [ $1 = "create-plots-k32" ]; then
         echo "Upload plot file to bucket $BUCKET failed."
     else
         echo "Removing final dir $PLOTS_FINAL..."
-	$cmd rm -rf $PLOTS_FINAL
+	#$cmd rm -rf $PLOTS_FINAL
     fi
     echo "Upload plot file to bucket $BUCKET succesfully"
 else
