@@ -62,7 +62,7 @@ $cmd chia init
 # Add Keys, Mount the secret words under SECRET_WRODS_PATH
 if [[ -f $SECRET_WORDS_PATH ]]; then
     echo "Adding keys under $SECRET_WRODS_PATH..."
-    $cmd chia keys add -f SECRET_WRODS_PATH
+    $cmd chia keys add -f $SECRET_WRODS_PATH
     echo "Adding keys succesfully"
 fi
 
