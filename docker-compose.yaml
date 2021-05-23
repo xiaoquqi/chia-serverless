@@ -21,6 +21,7 @@ services:
             - '~/.local:/root/.local'
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
+            - './conf:/conf'
         image: chia-docker
         command: ['/bin/bash', '/entrypoint.sh', 'harvester']
     create-plots-k32:

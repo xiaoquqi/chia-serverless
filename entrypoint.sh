@@ -76,7 +76,7 @@ elif [ $1 = "all" ]; then
 elif [ $1 = "harvester" ]; then
     echo "Starting harvester and connect to $FARMER_IP:$FARMER_PORT..."
     # Only run harvester, CA keys under CA_KEYS_PATH
-    if [[ ! -f $CA_KEYS_PATH ]]; then
+    if [[ ! -d $CA_KEYS_PATH ]]; then
         echo "ERROR: Can not find any keys under $CA_KEYS_PATH"
         exit 1
     fi
