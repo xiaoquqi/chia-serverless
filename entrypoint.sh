@@ -8,10 +8,12 @@
 #
 #   1. Path need to be mount in docker:
 #
-#   * Secret Words Path: /config/secret_words  
-#   * CA Keys file: /keys/ca
+#   * Secret Words Path: /conf/secret_words  
+#   * CA Keys file: /conf/ca_keys
 #   * Plots Temp: /plots-tmp
 #   * Plots Final: /plots-final
+#
+#   * Aliyun ossutil config: /conf/ossutilconfig
 #
 #   If you already have your full node, you can find your CA keys file
 #   under ~/.chia/mainnet/config/ssl/ca
@@ -21,6 +23,9 @@
 #   * FARMER_IP
 #   * FARMER_PORT
 #
+#   3. Create plots and upload to oss
+#
+#   * BUCKET
 
 # Only for debug, change this to true
 if [[ $2 = "dry-run" ]]; then
@@ -30,18 +35,26 @@ else
     cmd=''
 fi
 
-SECRET_WRODS_PATH="/config/secret_words"
-CA_KEYS_PATH="/keys/ca"
+# For chia
+SECRET_WRODS_PATH="/conf/secret_words"
+CA_KEYS_PATH="/conf/ca_keys"
 FARMER_IP=${FARMER_IP:-127.0.0.1}
 FARMER_PORT=${FARMER_PORT:-8447}
 
 PLOTS_FINAL=${PLOTS_FINAL:-/plots-final}
 PLOTS_TMP=${PLOSTS_TMP:-/plots-tmp}
 
+# For Aliyun oss configs
+OSSUTIL_CONFIG="/conf/ossutilconfig"
+
+# oss bucket name should be unique in global
+# so create bucket before this scripts run
+BUCKET=${BUCKET}
+
 export PATH=/chia-blockchain/venv/bin:$PATH
 
 # Activate virtualenv for chia
-$cmd . ./activate
+$cmd . /chia-blockchain/activate
 
 # Init chia env
 $cmd chia init
@@ -74,9 +87,29 @@ elif [ $1 = "harvester" ]; then
     $cmd tail -f ~/.chia/mainnet/log/debug.log
     echo "Start harvester successfully"
 elif [ $1 = "create-plots-k32" ]; then
-    echo "Creating plots..."
+    TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+    PLOTS_FINAL="$PLOTS_FINAL/${TIMESTAMP}_${RANDOM}"
+    mkdir -p $PLOTS_FINAL
+
+    $cmd ossutil64 ls -c $OSSUTIL_CONFIG oss://$BUCKET
+    if [[ $? != 0 ]]; then
+        echo "Target bucket $BUCKET not found, please create the bucket first."
+	exit 1
+    fi
+
+    echo "Creating plots, tmp path is $PLOTS_TMP, final path: $PLOTS_FINAL..."
     $cmd chia create plots -t $PLOTS_TMP -d $PLOTS_FINAL
-    echo "Start all node successfully"
+    echo "Plot create succesfully"
+
+    echo "Uploading plot file to bucket $BUCKET..."
+    $cmd ossutil64 -c $OSSUTIL_CONFIG cp $PLOTS_FINAL/*.plot oss://$BUCKET -u
+    if [[ $? != 0 ]]; then
+        echo "Upload plot file to bucket $BUCKET failed."
+    else
+        echo "Removing final dir $PLOTS_FINAL..."
+	$cmd rm -rf $PLOTS_FINAL
+    fi
+    echo "Upload plot file to bucket $BUCKET succesfully"
 else
     exec "$@"
 fi

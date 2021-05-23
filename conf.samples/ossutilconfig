@@ -1,0 +1,6 @@
+[Credentials]
+language=EN
+# oss endpoint link: https://help.aliyun.com/document_detail/31837.htm?spm=a2c4g.11186623.2.17.77b37385lFSgmT#concept-zt4-cvy-5db
+endpoint=oss-cn-beijing-internal.aliyuncs.com
+accessKeyID=xxxxx
+accessKeySecret=xxxxxx

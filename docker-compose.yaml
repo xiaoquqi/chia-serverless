@@ -13,6 +13,9 @@ services:
         command: ['/bin/bash', '/entrypoint.sh', 'all']
     harvester:
         container_name: chia-harvester
+        environment:
+           FARMER_IP: ${FARMER_IP}
+           FARMER_PORT: ${FARMER_PORT}
         volumes:
             - '~/.chia:/root/.chia'
             - '~/.local:/root/.local'
@@ -22,6 +25,8 @@ services:
         command: ['/bin/bash', '/entrypoint.sh', 'harvester']
     create-plots:
         container_name: chia-create-plots
+        environment:
+           BUCKET: ${BUCKET} 
         volumes:
             - '~/.chia:/root/.chia'
             - '~/.local:/root/.local'
@@ -29,3 +34,17 @@ services:
             - '/plots-final:/plots-final'
         image: chia-docker
         command: ['/bin/bash', '/entrypoint.sh', 'plots']
+    dev:
+        container_name: chia-dev
+        environment:
+           BUCKET: ${BUCKET} 
+           FARMER_IP: ${FARMER_IP}
+           FARMER_PORT: ${FARMER_PORT}
+        volumes:
+            - '~/.chia:/root/.chia'
+            - '~/.local:/root/.local'
+            - '/plots-tmp:/plots-tmp'
+            - '/plots-final:/plots-final'
+            - './conf:/conf'
+        image: chia-docker
+        command: ['sleep', '99999999']
