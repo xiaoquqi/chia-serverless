@@ -36,7 +36,7 @@ else
 fi
 
 # For chia
-SECRET_WRODS_PATH="/conf/secret_words"
+SECRET_WORDS_PATH="/conf/secret_words"
 CA_KEYS_PATH="/conf/ca_keys"
 FARMER_IP=${FARMER_IP:-127.0.0.1}
 FARMER_PORT=${FARMER_PORT:-8447}
@@ -59,10 +59,10 @@ $cmd . /chia-blockchain/activate
 # Init chia env
 $cmd chia init
 
-# Add Keys, Mount the secret words under SECRET_WRODS_PATH
+# Add Keys, Mount the secret words under SECRET_WORDS_PATH
 if [[ -f $SECRET_WORDS_PATH ]]; then
-    echo "Adding keys under $SECRET_WRODS_PATH..."
-    $cmd chia keys add -f $SECRET_WRODS_PATH
+    echo "Adding keys under $SECRET_WORDS_PATH..."
+    $cmd chia keys add -f $SECRET_WORDS_PATH
     echo "Adding keys succesfully"
 fi
 
