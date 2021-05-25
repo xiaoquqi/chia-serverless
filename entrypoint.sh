@@ -89,7 +89,9 @@ elif [ $1 = "harvester" ]; then
     echo "Start harvester successfully"
 elif [ $1 = "create-plots-k32" ]; then
     TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
-    PLOTS_FINAL="$PLOTS_FINAL/${TIMESTAMP}_${RANDOM}"
+    PLOTS_TMP="${PLOTS_TMP}/${TIMESTAMP}_${RANDOM}"
+    PLOTS_FINAL="${PLOTS_FINAL}/${TIMESTAMP}_${RANDOM}"
+    mkdir -p $PLOTS_TMP
     mkdir -p $PLOTS_FINAL
 
     $cmd ossutil64 ls -c $OSSUTIL_CONFIG oss://$BUCKET
@@ -105,12 +107,13 @@ elif [ $1 = "create-plots-k32" ]; then
     echo "Uploading plot file to bucket $BUCKET..."
     $cmd ossutil64 -c $OSSUTIL_CONFIG cp $PLOTS_FINAL/*.plot oss://$BUCKET -u
     if [[ $? != 0 ]]; then
+        # TODO: Need retry logical
         echo "Upload plot file to bucket $BUCKET failed."
-    else
-        echo "Removing final dir $PLOTS_FINAL..."
-	#$cmd rm -rf $PLOTS_FINAL
     fi
     echo "Upload plot file to bucket $BUCKET succesfully"
+    echo "Removing final dir $PLOTS_FINAL..."
+    $cmd rm -rf $PLOTS_FINAL
+    $cmd rm -rf $PLOTS_TMP
 else
     exec "$@"
 fi
