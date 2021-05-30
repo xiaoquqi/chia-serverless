@@ -94,26 +94,32 @@ elif [ $1 = "create-plots-k32" ]; then
     mkdir -p $PLOTS_TMP
     mkdir -p $PLOTS_FINAL
 
-    $cmd ossutil64 ls -c $OSSUTIL_CONFIG oss://$BUCKET
-    if [[ $? != 0 ]]; then
-        echo "Target bucket $BUCKET not found, please create the bucket first."
-	exit 1
+    # If BUCKET is not defined, skip to upload
+    if [[ ! -z "$BUCKET" ]]; then
+        $cmd ossutil64 ls -c $OSSUTIL_CONFIG oss://$BUCKET
+        if [[ $? != 0 ]]; then
+            echo "Target bucket $BUCKET not found, please create the bucket first."
+            exit 1
+        fi
     fi
 
     echo "Creating plots, tmp path is $PLOTS_TMP, final path: $PLOTS_FINAL..."
     $cmd chia plots create -t $PLOTS_TMP -d $PLOTS_FINAL
+    # Make sure tmp dir is clean
+    $cmd rm -rf $PLOTS_TMP
     echo "Plot create succesfully"
 
-    echo "Uploading plot file to bucket $BUCKET..."
-    $cmd ossutil64 -c $OSSUTIL_CONFIG cp $PLOTS_FINAL/*.plot oss://$BUCKET -u
-    if [[ $? != 0 ]]; then
-        # TODO: Need retry logical
-        echo "Upload plot file to bucket $BUCKET failed."
+    if [[ ! -z "$BUCKET" ]]; then
+        echo "Uploading plot file to bucket $BUCKET..."
+        $cmd ossutil64 -c $OSSUTIL_CONFIG cp $PLOTS_FINAL/*.plot oss://$BUCKET -u
+        if [[ $? != 0 ]]; then
+            # TODO: Need retry logical
+            echo "Upload plot file to bucket $BUCKET failed."
+        fi
+        echo "Upload plot file to bucket $BUCKET succesfully"
+        echo "Removing final dir $PLOTS_FINAL..."
+        $cmd rm -rf $PLOTS_FINAL
     fi
-    echo "Upload plot file to bucket $BUCKET succesfully"
-    echo "Removing final dir $PLOTS_FINAL..."
-    $cmd rm -rf $PLOTS_FINAL
-    $cmd rm -rf $PLOTS_TMP
 else
     exec "$@"
 fi
