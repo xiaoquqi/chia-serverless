@@ -1,16 +1,16 @@
 version: '3.3'
 services:
-    all-node:
+    farmer:
         ports:
             - '8444:8444'
-        container_name: chia-allnode
+        container_name: chia-farmer
         volumes:
             - '~/.chia:/root/.chia'
             - '~/.local:/root/.local'
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
         image: chia-docker
-        command: ['/bin/bash', '/entrypoint.sh', 'all']
+        command: ['/bin/bash', '/entrypoint.sh', 'farmer']
     harvester:
         container_name: chia-harvester
         environment:

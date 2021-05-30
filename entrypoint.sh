@@ -68,11 +68,15 @@ fi
 
 if [[ -z "$1" ]]; then
     /bin/bash
-elif [ $1 = "all" ]; then
+elif [ $1 = "farmer" ]; then
     echo "Starting all node..."
-    $cmd chia start all
+    $cmd sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
+    # Due to "can't find vdf_client binary" when you start all, replace with
+    # start farmer, farmer node include wallet and harvester
+    $cmd chia start farmer
+    $cmd chia plots add -d $PLOTS_FINAL
     $cmd tail -f ~/.chia/mainnet/log/debug.log
-    echo "Start all node successfully"
+    echo "Start farmer node successfully"
 elif [ $1 = "harvester" ]; then
     echo "Starting harvester and connect to $FARMER_IP:$FARMER_PORT..."
     # Only run harvester, CA keys under CA_KEYS_PATH
