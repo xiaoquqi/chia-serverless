@@ -9,7 +9,7 @@ services:
             - '~/.local:/root/.local'
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
-        image: registry-vpc.cn-beijing.aliyuncs.com/ray-dockers/chia-docker
+        image: registry-vpc.cn-beijing.aliyuncs.com/ray-dockers/chia-docker:latest
         command: ['/bin/bash', '/entrypoint.sh', 'farmer']
     harvester:
         container_name: chia-harvester
@@ -22,7 +22,7 @@ services:
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
             - './conf:/conf'
-        image: registry-vpc.cn-beijing.aliyuncs.com/ray-dockers/chia-docker
+        image: registry-vpc.cn-beijing.aliyuncs.com/ray-dockers/chia-docker:latest
         command: ['/bin/bash', '/entrypoint.sh', 'harvester']
     create-plots-k32:
         container_name: chia-create-plots
@@ -34,7 +34,7 @@ services:
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
             - './conf:/conf'
-        image: registry-vpc.cn-beijing.aliyuncs.com/ray-dockers/chia-docker
+        image: registry-vpc.cn-beijing.aliyuncs.com/ray-dockers/chia-docker:latest
         command: ['/bin/bash', '/entrypoint.sh', 'create-plots-k32']
     dev:
         container_name: chia-dev
@@ -48,5 +48,5 @@ services:
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
             - './conf:/conf'
-        image: registry-vpc.cn-beijing.aliyuncs.com/ray-dockers/chia-docker
+        image: registry-vpc.cn-beijing.aliyuncs.com/ray-dockers/chia-docker:latest
         command: ['sleep', '99999999']
