@@ -9,6 +9,7 @@ services:
             - '~/.local:/root/.local'
             - '/plots-tmp:/plots-tmp'
             - '/plots-final:/plots-final'
+            - './conf:/conf'
         image: registry.cn-beijing.aliyuncs.com/ray-dockers/chia-docker:latest
         command: ['/bin/bash', '/entrypoint.sh', 'farmer']
     harvester:
