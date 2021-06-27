@@ -84,6 +84,7 @@ elif [ $1 = "harvester" ]; then
         echo "ERROR: Can not find any keys under $CA_KEYS_PATH"
         exit 1
     fi
+    $cmd chia init -c $CA_KEYS_PATH
     $cmd sed -i 's/localhost/127.0.0.1/g' ~/.chia/mainnet/config/config.yaml
     $cmd sed -i 's/WARNING/INFO/g' ~/.chia/mainnet/config/config.yaml
     $cmd chia configure --set-farmer-peer $FARMER_IP:$FARMER_PORT

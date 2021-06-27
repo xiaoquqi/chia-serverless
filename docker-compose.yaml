@@ -3,6 +3,7 @@ services:
     farmer:
         ports:
             - '8444:8444'
+            - '8447:8447'
         container_name: chia-farmer
         volumes:
             - '~/.chia:/root/.chia'
@@ -27,6 +28,7 @@ services:
         command: ['/bin/bash', '/entrypoint.sh', 'harvester']
     create-plots-k32:
         container_name: chia-create-plots
+        restart: always
         environment:
            BUCKET: ${BUCKET} 
         volumes:
