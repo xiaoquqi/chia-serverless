@@ -51,6 +51,10 @@ OSSUTIL_CONFIG="/conf/ossutilconfig"
 # so create bucket before this scripts run
 BUCKET=${BUCKET}
 
+# rsync to
+RSYNC_TO=${RSYNC_TO}
+
+
 export PATH=/chia-blockchain/venv/bin:$PATH
 
 # Activate virtualenv for chia
@@ -113,6 +117,12 @@ elif [ $1 = "create-plots-k32" ]; then
     # Make sure tmp dir is clean
     $cmd rm -rf $PLOTS_TMP
     echo "Plot create succesfully"
+
+    if [[ ! -z "$RSYNC_TO" ]]; then
+        echo "Rsync plot file to $RSYNC_TO..."
+        $cmd rsync --remove-source-files -av $PLOTS_FINAL/*.plot $RSYNC_TO
+        echo "Rsync plot file done."
+    fi
 
     if [[ ! -z "$BUCKET" ]]; then
         echo "Uploading plot file to bucket $BUCKET..."
