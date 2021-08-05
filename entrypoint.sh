@@ -120,7 +120,7 @@ elif [ $1 = "create-plots-k32" ]; then
 
     if [[ ! -z "$RSYNC_TO" ]]; then
         echo "Rsync plot file to $RSYNC_TO..."
-        $cmd rsync --remove-source-files -av $PLOTS_FINAL/*.plot $RSYNC_TO
+        $cmd rsync -e "ssh -o StrictHostKeyChecking=no" --remove-source-files -av $PLOTS_FINAL/*.plot $RSYNC_TO
         echo "Rsync plot file done."
     fi
 
