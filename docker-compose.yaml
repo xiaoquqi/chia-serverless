@@ -32,10 +32,10 @@ services:
         environment:
            BUCKET: ${BUCKET} 
         volumes:
+            - '~/.ssh:/root/.ssh'
             - '~/.chia:/root/.chia'
             - '~/.local:/root/.local'
-            - '/plots-tmp:/plots-tmp'
-            - '/plots-final:/plots-final'
+            - '/plots-final/tmp:/plots-tmp'
             - './conf:/conf'
         image: registry.cn-beijing.aliyuncs.com/ray-dockers/chia-docker:latest
         command: ['/bin/bash', '/entrypoint.sh', 'create-plots-k32']
@@ -46,6 +46,7 @@ services:
            FARMER_IP: ${FARMER_IP}
            FARMER_PORT: ${FARMER_PORT}
         volumes:
+            - '~/.ssh:/root/.ssh'
             - '~/.chia:/root/.chia'
             - '~/.local:/root/.local'
             - '/plots-tmp:/plots-tmp'
