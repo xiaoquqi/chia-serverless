@@ -31,6 +31,7 @@ services:
         restart: always
         environment:
            BUCKET: ${BUCKET} 
+           RSYNC_TO: ${RSYNC_TO} 
         volumes:
             - '~/.ssh:/root/.ssh'
             - '~/.chia:/root/.chia'
@@ -43,6 +44,7 @@ services:
         container_name: chia-dev
         environment:
            BUCKET: ${BUCKET} 
+           RSYNC_TO: ${RSYNC_TO} 
            FARMER_IP: ${FARMER_IP}
            FARMER_PORT: ${FARMER_PORT}
         volumes:
